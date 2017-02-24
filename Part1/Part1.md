@@ -41,6 +41,7 @@
 	a + i 的值是a + i * (a所指的变量所占的字节数)
     
 	代码1：
+
 		# include <stdio.h>
 		
 		void f(int i){
@@ -60,16 +61,18 @@
 		}
 
 	代码2：
+
 		# include <stdio.h>
-			void main () {
+		void main () {
 			int a[5] = {1,3,4,6,5};
 			printf("%p\n", a + 1);	// %p打印地址
 			printf("%p\n", a + 2);
-			printf("%p\n", a + 3);
-		
+			printf("%p\n", a + 3);		
 			printf("%d\n", *a + 3); // *a + 3 = a[0] + 3;
 		}
+
     代码3：
+
 		# include <stdio.h>
 		
 		void Show_Array(int *p, int len){
@@ -84,4 +87,143 @@
 			int a[5] = {1,2,3,4,5};
 			Show_Array(a, 5);	// a <==> &a[0]
 			printf("%d\n", a[0]);
+		}
+4. 结构体
+	结构体是用户根据实际需要定义的复合数据类型
+	代码1：
+
+		# include <stdio.h>
+		# include <string.h>
+		
+		/* 结构体 */
+		struct Student {
+			// 成员
+			int sid;
+			char name[200];
+			int age;
+		};	// 分号不能省
+		
+		void main(void) {
+			struct Student st = {100, "张三", 39};
+			st.sid = 99; // 第一种方式
+		
+			// 第二种方式
+			struct Student * pst;
+			pst = &st;
+			// pst ->sid 代表pst所指向的结构体变量中的sid这个成员
+			pst ->sid = 99;	//pst ->sid 等价于 (*pst).sid 等价于 st.sid
+		
+			printf("%d %s %d\n", st.sid, st.name, st.age);
+			st.sid = 99;
+			//st.name = "李四"; // error
+			strcpy(st.name, "李四");
+			st.age = 22;
+			printf("%d %s %d\n", st.sid, st.name, st.age);
+		}
+
+	代码2：
+
+		# include <stdio.h>
+		# include <string.h>
+		
+		/* 结构体 */
+		struct Student {
+			// 成员
+			int sid;
+			char name[200];
+			int age;
+		};	// 分号不能省
+		
+		void f(struct Student *pst);
+		
+		void g(struct Student st);
+		
+		void g(struct Student *st);
+		void main(void) {
+			struct Student st;
+			f(&st);
+			// printf("%d %s %d", st.sid, st.name, st.age);
+			g(st);
+			g(&st);
+		}
+		
+		/**
+		 * 这种方式的耗内存，耗时间，不推荐
+		 */
+		void g(struct Student st) {
+			printf("%d %s %d\n", st.sid, st.name, st.age);
+		}
+		
+		/**
+		 * 这种方式只传递4个字节的地址
+		 */
+		void g(struct Student *pst) {
+			printf("%d %s %d\n", pst->sid, pst->name, pst->age);
+		}
+		
+		void f(struct Student * pst) {
+			(*pst).sid = 22;
+			strcpy(pst ->name, "zhangsan");
+			pst->age = 22;
+		}
+5. 动态内存分配与释放
+6. 
+		# include <stdio.h>
+		# include <malloc.h>
+	
+		void main(void) {
+		
+			int a[5] = {4, 10, 2, 8, 6};
+			int len;
+			printf("请输入数组的长度 : len = ");
+			scanf("%d", &len);
+			// 手动分配的内存必须手动释放
+			int * pArr = (int *) malloc(sizeof(int) * len);
+		
+			//*pArr = 4; // a[0] = 4;
+			//pArr[1] = 10;
+			for (int i = 0; i < len; ++i)
+				scanf("%d", &pArr[i]);
+		
+			for (i = 0; i < len; ++i)
+				printf("%d\n", *(pArr + i));
+		
+			// 把pArr所代表的动态分配的内存释放
+			free(pArr);
+		}
+
+	跨函数使用内存
+
+		/**
+		 * 跨函数使用内存
+		 */
+		
+		# include <stdio.h>
+		# include <malloc.h>
+		
+		struct Student {
+			int sid;
+			int age;
+		};
+		
+		struct Student * createStudent();
+		
+		void showStudent(struct Student *);
+		
+		void main(){
+			struct Student * ps;
+			
+			ps = createStudent();
+			showStudent(ps);
+		}
+		
+		struct Student * createStudent(){
+			struct Student * p = (struct Student *)malloc(sizeof(struct Student));
+			p->sid = 10;
+			p->age = 99;
+			return p;
+		}
+		
+		void showStudent(struct Student * pst){
+			printf("%d %d\n", pst->sid, pst->age);
 		}
