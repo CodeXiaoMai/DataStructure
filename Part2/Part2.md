@@ -108,6 +108,7 @@
     		return false;
     	} else {
     		pArr->pBase[(pArr->cnt)++] = val;
+			return true;
     	}
     }
     
