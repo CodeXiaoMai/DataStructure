@@ -1,0 +1,11 @@
+# include <stdio.h>
+
+typedef struct Node {
+	//  ˝æ›”Ú
+	int data;
+	// ÷∏’Î”Ú
+	struct Node *pNext;
+}NODE, *PNODE;
+
+void main() {
+}
