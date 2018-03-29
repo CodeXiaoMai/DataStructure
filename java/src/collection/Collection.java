@@ -2,9 +2,9 @@ package collection;
 
 public interface Collection<E> {
 
-    boolean add(E value);
+    boolean add(E element);
 
-    boolean remove(Object value);
+    boolean remove(E element);
 
     int size();
 
@@ -12,7 +12,7 @@ public interface Collection<E> {
 
     boolean isNotEmpty();
 
-    boolean contains(Object value);
+    boolean contains(E element);
 
     void clear();
 }

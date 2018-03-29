@@ -12,9 +12,9 @@ public class ArrayList<E> implements List<E> {
         elementData = new Object[DEFAULT_SIZE];
     }
 
-    public ArrayList(int cam) {
-        if (cam > 0) {
-            elementData = new Object[cam];
+    public ArrayList(int capacity) {
+        if (capacity > 0) {
+            elementData = new Object[capacity];
         } else {
             elementData = new Object[DEFAULT_SIZE];
         }
@@ -28,22 +28,21 @@ public class ArrayList<E> implements List<E> {
     }
 
     @Override
-    public E set(int index, E value) {
+    public E set(int index, E element) {
         rangeCheck(index);
 
-        E e = elementData(index);
-        elementData[index] = value;
-        return e;
+        E elementData = elementData(index);
+        this.elementData[index] = element;
+        return elementData;
     }
 
     @Override
-    public boolean insert(int index, E value) {
+    public boolean insert(int index, E element) {
         rangeCheck(index);
 
-        for (int i = size; i > index; i--) {
-            elementData[i] = elementData[i - 1];
-        }
-        elementData[index] = value;
+        System.arraycopy(elementData, index, elementData, index + 1, size - index);
+
+        elementData[index] = element;
         size++;
         return true;
     }
@@ -53,18 +52,16 @@ public class ArrayList<E> implements List<E> {
         rangeCheck(index);
 
         E oldValue = elementData(index);
-        for (int i = index; i < size; i++) {
-            elementData[i] = elementData[i + 1];
-        }
-        elementData[--size] = null;
+
+        fastRemove(index);
         return oldValue;
     }
 
     @Override
-    public int indexOf(Object object) {
-        // 因为判断非基本类型的变量是否相等使用 equals() 方法，而 object 又可能为 null,
-        // 所以需要对 object 进行判断
-        if (object == null) {
+    public int indexOf(E element) {
+        // 因为判断非基本类型的变量是否相等使用 equals() 方法，而 element 又可能为 null,
+        // 所以需要对 element 进行判断
+        if (element == null) {
             for (int i = 0; i < size; i++) {
                 if (elementData[i] == null) {
                     return i;
@@ -72,7 +69,7 @@ public class ArrayList<E> implements List<E> {
             }
         } else {
             for (int i = 0; i < size; i++) {
-                if (object.equals(elementData[i])) {
+                if (element.equals(elementData[i])) {
                     return i;
                 }
             }
@@ -81,14 +78,14 @@ public class ArrayList<E> implements List<E> {
     }
 
     @Override
-    public boolean add(E value) {
-        elementData[size++] = value;
+    public boolean add(E element) {
+        elementData[size++] = element;
         return true;
     }
 
     @Override
-    public boolean remove(Object value) {
-        if (value == null) {
+    public boolean remove(E element) {
+        if (element == null) {
             for (int i = 0; i < size; i++) {
                 if (elementData[i] == null) {
                     fastRemove(i);
@@ -97,17 +94,18 @@ public class ArrayList<E> implements List<E> {
             }
         }
         for (int i = 0; i < size; i++) {
-            if (elementData[i] == value) {
+            if (elementData[i].equals(element)) {
                 fastRemove(i);
                 return true;
             }
         }
-        return true;
+        return false;
     }
 
     private void fastRemove(int index) {
-        for (int i = index; i < size; i++) {
-            elementData[i] = elementData[i + 1];
+        int numMoved = size - index - 1;
+        if (numMoved > 0) {
+            System.arraycopy(elementData, index + 1, elementData, index, numMoved);
         }
         elementData[--size] = null;
     }
@@ -128,8 +126,8 @@ public class ArrayList<E> implements List<E> {
     }
 
     @Override
-    public boolean contains(Object value) {
-        return indexOf(value) >= 0;
+    public boolean contains(E element) {
+        return indexOf(element) >= 0;
     }
 
     @Override
