@@ -1,5 +1,7 @@
 package collection;
 
+import java.util.Arrays;
+
 public class ArrayList<E> implements List<E> {
 
     private int size;
@@ -40,6 +42,10 @@ public class ArrayList<E> implements List<E> {
     public boolean insert(int index, E element) {
         rangeCheck(index);
 
+        if (size >= elementData.length) {
+            grow(size + 1);
+        }
+
         System.arraycopy(elementData, index, elementData, index + 1, size - index);
 
         elementData[index] = element;
@@ -79,8 +85,20 @@ public class ArrayList<E> implements List<E> {
 
     @Override
     public boolean add(E element) {
+        if (size >= elementData.length) {
+            grow(size + 1);
+        }
         elementData[size++] = element;
         return true;
+    }
+
+    private void grow(int minSize) {
+        int oldSize = elementData.length;
+        int newSize = oldSize + (oldSize >> 1);
+        if (newSize < minSize) {
+            newSize = minSize;
+        }
+        elementData = Arrays.copyOf(elementData, newSize);
     }
 
     @Override
