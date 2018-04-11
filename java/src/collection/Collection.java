@@ -4,7 +4,7 @@ public interface Collection<E> {
 
     boolean add(E element);
 
-    boolean remove(E element);
+    boolean remove(Object element);
 
     int size();
 

@@ -4,3 +4,7 @@
 *.opt
 *.plg
 Debug/
+*.DS_Store
+out/
+._*
+.DS_Store

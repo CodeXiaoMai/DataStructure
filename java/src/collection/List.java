@@ -8,7 +8,7 @@ public interface List<E> extends Collection<E> {
 
     boolean insert(int index, E element);
 
-    E remove(int index);
+    E removeAt(int index);
 
     int indexOf(E object);
 }

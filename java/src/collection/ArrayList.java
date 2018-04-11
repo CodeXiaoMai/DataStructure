@@ -54,7 +54,7 @@ public class ArrayList<E> implements List<E> {
     }
 
     @Override
-    public E remove(int index) {
+    public E removeAt(int index) {
         rangeCheck(index);
 
         E oldValue = elementData(index);
@@ -102,7 +102,7 @@ public class ArrayList<E> implements List<E> {
     }
 
     @Override
-    public boolean remove(E element) {
+    public boolean remove(Object element) {
         if (element == null) {
             for (int i = 0; i < size; i++) {
                 if (elementData[i] == null) {
