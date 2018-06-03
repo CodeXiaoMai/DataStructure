@@ -134,15 +134,7 @@ public class LinkedList<E> implements List<E> {
 
     @Override
     public boolean add(E element) {
-        Node<E> l = last;
-        Node<E> newNode = new Node<>(l, null, element);
-        last = newNode;
-        if (l == null) {
-            first = newNode;
-        } else {
-            l.next = newNode;
-        }
-        size++;
+        linkLast(element);
         return true;
     }
 

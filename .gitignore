@@ -8,3 +8,6 @@ Debug/
 out/
 ._*
 .DS_Store
+java/.idea/workspace.xml
+java/.idea/uiDesigner.xml
+java/.idea/vcs.xml
